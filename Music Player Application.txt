@@ -1,0 +1,300 @@
+package PROJECT;
+import java.util.*;
+
+class Song {
+    String name;
+    Double duration;
+    void song_details1(String name, Double duration){
+        this.name=name;
+        this.duration=duration;
+    }
+}
+
+class Music_Capabilities extends Song{
+    ArrayList<String> songs=new ArrayList<>();
+    ArrayList<Double> durations=new ArrayList<>();
+    HashMap<String, Double> albumPrices=new HashMap<>();
+    
+    int currentSongIndex=0;
+    boolean isPlaying=true;
+    boolean isPaused=true;
+
+    void initializeSongs(){
+        //HINDI                                            //TELUGU
+        songs.add("Udd Jaa Kaale Kaava");                  songs.add("Nijame Ne Chebutunna");
+        durations.add(04.48);                              durations.add(03.34); 
+        
+        songs.add("Apna Bana Le");                         songs.add("O Rendu Prema Meghaalila");
+        durations.add(04.21);                              durations.add(05.14);
+        
+        songs.add("Zihaal e Miskin");                      songs.add("My Dear Markandeya");
+        durations.add(04.04);                              durations.add(04.18);
+        
+        songs.add("Kesariya");                             songs.add("Pulsar Bike");
+        durations.add(04.28);                              durations.add(02.10);
+        
+        songs.add("Kya Loge Tum");                         songs.add("Yedurangula Vaana");
+        durations.add(03.54);                              durations.add(04.12);
+       
+        //TAMIL                                              //ENGLISH
+        songs.add("Kaavaalaa (From Jailer)");                songs.add("Desperado");
+        durations.add(03.10);                                durations.add(04.07);
+        
+        songs.add("Naa Ready (From Leo)");                   songs.add("Calm Down");
+        durations.add(04.08);                                durations.add(03.59);
+        
+        songs.add("Arabic Kuthu - Halamithi Habibo");        songs.add("Car Keys (Ayla)");
+        durations.add(04.39);                                durations.add(02.26);                   
+        
+        songs.add("Hukum - Thalaivar Alappara");             songs.add("See You Again");
+        durations.add(03.27);                                durations.add(02.43);
+        
+        songs.add("His Name is John (Dhruva Natchathiram)"); songs.add("Speed Drive (From Barbie The Album)");
+        durations.add(03.49);                                durations.add(01.57);
+        
+        //MALAYALAM
+        songs.add("Kalapakkaara");
+        durations.add(04.10);
+        
+        songs.add("Haalaake Maarunne");
+        durations.add(03.17);
+        
+        songs.add("Darshana");
+        durations.add(03.47);                       
+        
+        songs.add("People of Kotha (From King of Kotha)");
+        durations.add(01.31);
+        
+        songs.add("Rookie Dada");
+        durations.add(02.14);
+        
+        //ALBUM PRICES
+        albumPrices.put("Telugu", 2499.00);    
+        albumPrices.put("Hindi", 2199.00);
+        albumPrices.put("English", 2999.00);
+        albumPrices.put("Tamil", 1999.00);
+        albumPrices.put("Malayalam", 1499.00);
+    }
+
+    void playSong(){
+    	song_details1(songs.get(currentSongIndex), durations.get(currentSongIndex));
+    	song_details3();
+    }
+    
+    void pauseSong(){
+        if(isPlaying){
+            isPlaying=false;
+            isPaused=true;
+            System.out.println("Song paused: "+name);
+        }
+        else{
+            System.out.println("Song is already paused.");
+        }
+    }
+
+    void resumeSong(){
+        if(isPaused){
+            isPlaying=true;
+            isPaused=false; 
+            System.out.println("Resuming song: "+name);
+        }
+        else{
+            System.out.println("No song is paused to resume.");
+        }
+    }
+    
+    void playNextSong(){
+        currentSongIndex=(currentSongIndex+1) % songs.size();
+        song_details1(songs.get(currentSongIndex), durations.get(currentSongIndex));
+        song_details3();
+    }
+    
+    void playPreviousSong(){
+        currentSongIndex=(currentSongIndex-1 + songs.size()) % songs.size();
+        song_details1(songs.get(currentSongIndex), durations.get(currentSongIndex));
+        song_details3();
+    }
+    
+    void ReplaySong(){
+    	song_details1(songs.get(currentSongIndex), durations.get(currentSongIndex));
+    	song_details3();
+    }
+    
+    void deleteSong(String songName){
+        int index=songs.indexOf(songName);
+        if(index!=-1){
+            String deletedSongName=songs.get(index);
+            songs.remove(index);
+            durations.remove(index);
+            if(currentSongIndex>=songs.size()){
+            	currentSongIndex=songs.size()-1;
+            }
+            System.out.println(deletedSongName+" Song is deleted.");
+        }
+        else{
+            System.out.println("Song not found.");
+        }
+    }
+    
+    void song_details3(){
+        System.out.println("Current Song is playing: "+name+"  ["+duration+"]");
+    }
+
+
+    void filterSongsByLanguage(String language){
+        ArrayList<String> filteredSongs=new ArrayList<>();
+        ArrayList<Double> filteredDurations=new ArrayList<>();
+
+        for (int i=0;i<songs.size();i++){
+            String songName=songs.get(i);
+            Double duration=durations.get(i);
+
+            if(language.equals("Telugu") && (songName.equals("O Rendu Prema Meghaalila") || songName.equals("Nijame Ne Chebutunna") || songName.equals("My Dear Markandeya") || songName.equals("Pulsar Bike") || songName.equals("Yedurangula Vaana"))){
+                filteredSongs.add(songName);
+                filteredDurations.add(duration);
+            }else if(language.equals("Hindi") && (songName.equals("Udd Jaa Kaale Kaava") || songName.equals("Apna Bana Le") || songName.equals("Zihaal e Miskin") || songName.equals("Kesariya") || songName.equals("Kya Loge Tum"))){
+                filteredSongs.add(songName);
+                filteredDurations.add(duration);
+            }else if(language.equals("English") && (songName.equals("Desperado") || songName.equals("Calm Down") || songName.equals("Car Keys (Ayla)") || songName.equals("See You Again") || songName.equals("Speed Drive (From Barbie The Album)"))){
+                filteredSongs.add(songName);
+                filteredDurations.add(duration);
+            }else if(language.equals("Tamil") && (songName.equals("Kaavaalaa (From Jailer)") || songName.equals("Naa Ready (From Leo)") || songName.equals("Arabic Kuthu - Halamithi Habibo") || songName.equals("Hukum - Thalaivar Alappara") || songName.equals("His Name is John (Dhruva Natchathiram)"))){
+                filteredSongs.add(songName);
+                filteredDurations.add(duration);
+            }else if(language.equals("Malayalam") && (songName.equals("Kalapakkaara") || songName.equals("Haalaake Maarunne") || songName.equals("Darshana") || songName.equals("People of Kotha (From King of Kotha)") || songName.equals("Rookie Dada"))){
+               filteredSongs.add(songName);
+               filteredDurations.add(duration);
+           }
+         }
+        songs=filteredSongs;
+        durations=filteredDurations;
+        currentSongIndex=0;
+    }
+}
+
+public class Music_player{
+    public static void main(String[] args){
+        Music_Capabilities ob=new Music_Capabilities();
+        ob.initializeSongs();
+
+        System.out.println("For preferred language press");
+        System.out.println("1.తెలుగు");
+        System.out.println("2.हिंदी");
+        System.out.println("3.English");
+        System.out.println("4.தமிழ்");
+        System.out.println("5.മലയാളം");
+
+        Scanner s=new Scanner(System.in);
+        int languageChoice=s.nextInt();
+        String selectedLanguage="";
+        double albumPrice=0.0;
+        
+        switch(languageChoice){
+            case 1:
+                selectedLanguage="Telugu";
+                albumPrice=ob.albumPrices.get(selectedLanguage);
+                break;
+            case 2:
+                selectedLanguage="Hindi";
+                albumPrice=ob.albumPrices.get(selectedLanguage);
+                break;
+            case 3:
+                selectedLanguage="English";
+                albumPrice=ob.albumPrices.get(selectedLanguage);
+                break;
+            case 4:
+                selectedLanguage="Tamil";
+                albumPrice=ob.albumPrices.get(selectedLanguage);
+                break;
+            case 5:
+                selectedLanguage="Malayalam";
+                albumPrice=ob.albumPrices.get(selectedLanguage);
+                break;
+            default:
+                System.out.println("Exit music player");
+                System.exit(0);
+        }
+        
+        System.out.println("Selected language: "+selectedLanguage);
+        ob.filterSongsByLanguage(selectedLanguage); 
+    
+            System.out.println("For more details press");
+            System.out.println("1.Play song");
+            System.out.println("2.Pause song");
+            System.out.println("3.Resume song");
+            System.out.println("4.Next song");
+            System.out.println("5.Previous song");
+            System.out.println("6.Replay song");
+            System.out.println("7.Delete song");
+            System.out.println("8.SRK's Lightning Offer: "+selectedLanguage+" Album on sale");
+            System.out.println("9.Purchase more albums");
+            System.out.println("10.Exit music player");
+            
+            double availableBalance=7000.0;
+            Set<String> purchasedAlbums = new HashSet<>();
+            
+            while(true){
+            int choice=s.nextInt();
+            switch(choice){
+                case 1:
+                    ob.playSong();
+                    break;
+                case 2:
+                    ob.pauseSong();
+                    break;
+                case 3:
+                    ob.resumeSong();
+                    break;
+                case 4:
+                    ob.playNextSong();
+                    break;
+                case 5:
+                    ob.playPreviousSong();
+                    break;
+                case 6:
+                    ob.ReplaySong();
+                    break;
+                case 7:
+                    System.out.println("Enter the name of the song to delete:");
+                    s.nextLine();
+                    String songToDelete=s.nextLine();
+                    ob.deleteSong(songToDelete);
+                    break;
+                case 8:
+                    System.out.println("Album price for "+selectedLanguage+": ₹"+albumPrice);
+                    break;
+                case 9:
+                	System.out.println("Available balance: ₹"+availableBalance);
+                    System.out.println("Enter the language of the album you want to purchase:");
+                    s.nextLine();
+                    String albumToPurchase=s.nextLine();
+
+                    if (ob.albumPrices.containsKey(albumToPurchase)){
+                        if (purchasedAlbums.contains(albumToPurchase)){
+                            System.out.println("You already purchased this album.");
+                        }else{
+                            double price=ob.albumPrices.get(albumToPurchase);
+                            if(availableBalance>=price){
+                                availableBalance-=price;
+                                purchasedAlbums.add(albumToPurchase);
+                                System.out.println("Album purchased: "+albumToPurchase);
+                                System.out.println("Remaining balance: ₹"+availableBalance);
+                            }else{
+                                System.out.println("Insufficient balance to purchase this album.");
+                            }
+                        }
+                    }
+                    else{
+                        System.out.println("Album not available in the selected language.");
+                    }
+                    break;
+                case 10:
+                    System.out.println("Exit music player...");
+                    System.exit(0);
+                default:
+                    System.out.println("Invalid choice");
+            }
+              System.out.println("For more details, press");
+        }
+    }
+}
